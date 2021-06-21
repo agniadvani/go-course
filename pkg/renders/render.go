@@ -7,17 +7,28 @@ import (
 	"text/template"
 
 	"github.com/agniadvani/go-course/pkg/config"
+	"github.com/agniadvani/go-course/pkg/models"
 )
 
+//Adds user-defined functions to the templates
 var function = template.FuncMap{}
 
+//Variable to be refrenced outside the package
 var app *config.AppConfig
 
+//Function for Initialising the variable outside the package
 func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+//Adds default data to be parsed in every template
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+
+	return td
+}
+
+//Finds the parsed template from the map and executes it. To be used by the handlers.
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 
 	if app.UseCache {
@@ -30,13 +41,15 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 		log.Fatalln("No template found.")
 	}
 
-	err := t.Execute(w, nil)
+	td = AddDefaultData(td)
+	err := t.Execute(w, td)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 }
 
+//Parses the pages, and associated layouts for every page and stores it in a map with the index of the page name
 func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := make(map[string]*template.Template)
 
