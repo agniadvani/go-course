@@ -13,6 +13,7 @@ import (
 func router(app *config.AppConfig) http.Handler {
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
+	mux.Use(NoSurf)
 	mux.Get("/", handler.Repo.Home)
 	mux.Get("/about", handler.Repo.About)
 	return mux
