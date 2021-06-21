@@ -26,8 +26,16 @@ func main() {
 
 	app.UseCache = false
 
-	http.HandleFunc("/", handler.Repo.Home)
-	http.HandleFunc("/about", handler.Repo.About)
 	fmt.Println("Application running on port", portNumber)
-	http.ListenAndServe(portNumber, nil)
+
+	//Serving at port :8080 and routing using pat router
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: router(&app),
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
