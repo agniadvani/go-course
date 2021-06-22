@@ -13,13 +13,13 @@ var Repo *Repository
 
 //Struct that holds the variable app, can be referenced outside the package scope using New Repo
 type Repository struct {
-	App *config.AppConfig
+	app *config.AppConfig
 }
 
 //Repository init function
 func NewRepo(a *config.AppConfig) *Repository {
 	return &Repository{
-		App: a,
+		app: a,
 	}
 }
 
