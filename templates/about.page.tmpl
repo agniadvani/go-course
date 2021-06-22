@@ -7,6 +7,13 @@
             <div class="col">
                 <h1>This is the about page.</h1>
                 <p1>{{index .StringMap "test"}}</p1>
+                <p>
+                    {{if ne (index .StringMap "remote_ip") ""}}
+                        Your IP Address: {{index .StringMap "remote_ip"}}
+                    {{else}}
+                        IP not set in session, visit <a href="/">Homepage</a> to set ID in session.
+                    {{end}}
+                </p>
             </div>
         </div>
     </div>
